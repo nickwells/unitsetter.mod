@@ -1,12 +1,12 @@
 package unitsetter
 
 import (
-	"errors"
 	"fmt"
 	"sort"
 	"strings"
 
 	"github.com/nickwells/param.mod/v2/param"
+	"github.com/nickwells/param.mod/v2/param/psetter"
 	"github.com/nickwells/strdist.mod/strdist"
 	"github.com/nickwells/units.mod/units"
 )
@@ -19,20 +19,16 @@ type UnitCheckFunc func(units.Unit) error
 // Unit value. You can also supply a check function that will validate the
 // Value.
 type UnitSetter struct {
+	param.ValueReqMandatory
+
 	Value  *units.Unit
 	UD     units.UnitDetails
 	Checks []UnitCheckFunc
 }
 
-// ValueReq returns Mandatory indicating that some value must follow
-// the parameter
-func (s UnitSetter) ValueReq() param.ValueReq {
-	return param.Mandatory
-}
-
-// Set (called when there is no following value) returns an error
-func (s UnitSetter) Set(_ string) error {
-	return errors.New("no value given (it should be followed by a unit name)")
+// CountChecks returns the number of check functions
+func (s UnitSetter) CountChecks() int {
+	return len(s.Checks)
 }
 
 // suggestAltVal will suggest a possible alternative value for the parameter
@@ -81,7 +77,7 @@ func (s UnitSetter) SetWithVal(_ string, paramVal string) error {
 	return nil
 }
 
-// allowedValNames returns slice containing the names of allowed values
+// validNames returns a slice containing the names of allowed values
 func (s UnitSetter) validNames() []string {
 	var names []string
 
@@ -101,16 +97,10 @@ func (s UnitSetter) AllowedValues() string {
 	}
 
 	sort.Strings(names)
-	rval := ""
-	sep := ""
-	for _, name := range names {
-		rval += sep + name
-		sep = ", "
-	}
+	rval := strings.Join(names, ", ")
 
-	if len(s.Checks) != 0 {
-		rval += " subject to checks"
-	}
+	rval += psetter.HasChecks(s)
+
 	return rval
 }
 

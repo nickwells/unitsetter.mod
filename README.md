@@ -1,2 +1,4 @@
+[![GoDoc](https://godoc.org/github.com/nickwells/unitsetter.mod?status.png)](https://godoc.org/github.com/nickwells/unitsetter.mod)
+
 # unitsetter.mod
-a param setter for units
+This provides a setter for constructing a units.Unit struct suitable for use by the param package.

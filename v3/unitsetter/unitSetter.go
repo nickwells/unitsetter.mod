@@ -5,8 +5,8 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/nickwells/param.mod/v3/param"
-	"github.com/nickwells/param.mod/v3/param/psetter"
+	"github.com/nickwells/param.mod/v4/param"
+	"github.com/nickwells/param.mod/v4/param/psetter"
 	"github.com/nickwells/strdist.mod/strdist"
 	"github.com/nickwells/units.mod/units"
 )
@@ -20,7 +20,6 @@ type UnitCheckFunc func(units.Unit) error
 // Value.
 type UnitSetter struct {
 	param.ValueReqMandatory
-	param.NilAVM
 
 	Value  *units.Unit
 	UD     units.UnitDetails

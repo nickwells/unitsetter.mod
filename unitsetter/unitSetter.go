@@ -5,8 +5,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/nickwells/param.mod/v4/param"
-	"github.com/nickwells/param.mod/v4/param/psetter"
+	"github.com/nickwells/param.mod/v5/param/psetter"
 	"github.com/nickwells/strdist.mod/strdist"
 	"github.com/nickwells/units.mod/units"
 )
@@ -19,7 +18,7 @@ type UnitCheckFunc func(units.Unit) error
 // Unit value. You can also supply a check function that will validate the
 // Value.
 type UnitSetter struct {
-	param.ValueReqMandatory
+	psetter.ValueReqMandatory
 
 	Value  *units.Unit
 	UD     units.UnitDetails

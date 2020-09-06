@@ -16,7 +16,7 @@ github.com/nickwells/testhelper.mod v1.9.0 h1:RDKjadVD+cuSmFePuU3jMqsbSKAuhtNHRP
 github.com/nickwells/testhelper.mod v1.9.0/go.mod h1:Ct/U2PjL0n9hGc+US6uR/s4NxSRI33NM+0ZkrDkG0XI=
 github.com/nickwells/twrap.mod v1.4.4 h1:dsO9qJGzwvG3UdBmROyBlHMmCvxI3mJ0nSYrylPoiZU=
 github.com/nickwells/twrap.mod v1.4.4/go.mod h1:z+Gy+0aGXV9oKshMIvF7SdrzU28hOXoXEfkAEUJZDTk=
-github.com/nickwells/units.mod v1.3.2 h1:41DPvMOefexmigGOD9Qif48wAsS0FxurPdirO/Vi6MU=
-github.com/nickwells/units.mod v1.3.2/go.mod h1:myvlz1oVvPz8yaNzfAebIAqWY/vhlA9A4Me0SCRFRxo=
+github.com/nickwells/units.mod v1.3.3 h1:KGVmiNwby8dGJM1wLXbscgSmPb8pmrwbeDQlBWrSptw=
+github.com/nickwells/units.mod v1.3.3/go.mod h1:myvlz1oVvPz8yaNzfAebIAqWY/vhlA9A4Me0SCRFRxo=
 github.com/nickwells/xdg.mod v1.0.3 h1:lzYZLwtCFtvKdItBtJhCEyTfNCmNK1sfhFPqhfbjWlQ=
 github.com/nickwells/xdg.mod v1.0.3/go.mod h1:h8lRJMpY6oXdD6E3jJuolpO9QJE5FcTvUe8eyRzgyQo=

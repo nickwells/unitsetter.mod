@@ -54,7 +54,6 @@ func (s UnitSetter) suggestAltVal(val string) string {
 func (s UnitSetter) SetWithVal(_ string, paramVal string) error {
 	v, ok := s.UD.AltU[paramVal]
 	if !ok {
-
 		return fmt.Errorf("'%s' is not a recognised %s.%s",
 			paramVal, s.UD.Fam.Description, s.suggestAltVal(paramVal))
 	}
@@ -89,7 +88,7 @@ func (s UnitSetter) validNames() []string {
 
 // AllowedValues returns a string describing the allowed values
 func (s UnitSetter) AllowedValues() string {
-	var names = s.validNames()
+	names := s.validNames()
 	if len(names) == 0 {
 		return "there are no valid conversions for this unit type: " +
 			s.UD.Fam.BaseUnitName

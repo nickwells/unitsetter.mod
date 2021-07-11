@@ -111,18 +111,16 @@ func (s UnitSetter) CurrentValue() string {
 // Value is nil, if the base unit is invalid or if one of the check functions
 // is nil.
 func (s UnitSetter) CheckSetter(name string) {
+	intro := name + ": unitsetter.UnitSetter Check failed: "
 	if s.Value == nil {
-		panic(name +
-			": UnitSetter Check failed: the Value to be set is nil")
+		panic(intro + "the Value to be set is nil")
 	}
 	if s.UD.AltU == nil {
-		panic(name +
-			": UnitSetter Check failed: there are no valid alternative units")
+		panic(intro + "there are no valid alternative units")
 	}
 	for _, check := range s.Checks {
 		if check == nil {
-			panic(name +
-				": UnitSetter Check failed: one of the check functions is nil")
+			panic(intro + "one of the check functions is nil")
 		}
 	}
 }

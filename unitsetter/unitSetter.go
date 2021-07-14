@@ -87,6 +87,9 @@ func (s UnitSetter) validNames() []string {
 	for k := range s.UD.AltU {
 		names = append(names, k)
 	}
+	for k := range s.UD.Aliases {
+		names = append(names, k)
+	}
 
 	return names
 }
@@ -96,10 +99,26 @@ func (s UnitSetter) AllowedValues() string {
 	names := s.validNames()
 	if len(names) == 0 {
 		return "there are no valid conversions for this unit type: " +
-			s.UD.Fam.BaseUnitName
+			s.UD.Fam.Description
 	}
 
-	sort.Strings(names)
+	sort.Slice(names, func(i, j int) bool {
+		// sort the family base name to the front
+		if names[i] == s.UD.Fam.BaseUnitName {
+			return true
+		}
+		if names[j] == s.UD.Fam.BaseUnitName {
+			return false
+		}
+
+		// then prefer shorter names
+		if len(names[i]) != len(names[j]) {
+			return len(names[i]) < len(names[j])
+		}
+
+		// then alphabetically
+		return names[i] < names[j]
+	})
 	rval := strings.Join(names, ", ")
 
 	rval += psetter.HasChecks(s)
@@ -129,7 +148,7 @@ func (s UnitSetter) CheckSetter(name string) {
 	if s.Value == nil {
 		panic(intro + "the Value to be set is nil")
 	}
-	if s.UD.AltU == nil {
+	if s.UD.AltU == nil || len(s.UD.AltU) == 0 {
 		panic(intro + "there are no valid alternative units")
 	}
 	for _, check := range s.Checks {

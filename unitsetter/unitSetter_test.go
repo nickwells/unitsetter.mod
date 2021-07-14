@@ -1,6 +1,7 @@
 package unitsetter_test
 
 import (
+	"errors"
 	"testing"
 
 	"github.com/nickwells/param.mod/v5/param"
@@ -35,17 +36,28 @@ func TestUnitSetter(t *testing.T) {
 		{
 			ID: testhelper.MkID("bad-value"),
 			PSetter: unitsetter.UnitSetter{
-				Value: nil,
-				UD:    units.GetUnitDetailsOrPanic(units.Distance),
+				UD: units.GetUnitDetailsOrPanic(units.Distance),
 			},
 			ExpPanic: testhelper.MkExpPanic(
 				dfltParamName + ": unitsetter.UnitSetter Check failed: " +
 					"the Value to be set is nil"),
 		},
 		{
-			ID: testhelper.MkID("bad-unit-details"),
+			ID: testhelper.MkID("bad-unit-details-nil-AltU"),
 			PSetter: unitsetter.UnitSetter{
 				Value: &u,
+			},
+			ExpPanic: testhelper.MkExpPanic(
+				dfltParamName + ": unitsetter.UnitSetter Check failed: " +
+					"there are no valid alternative units"),
+		},
+		{
+			ID: testhelper.MkID("bad-unit-details-empty-AltU"),
+			PSetter: unitsetter.UnitSetter{
+				Value: &u,
+				UD: units.UnitDetails{
+					AltU: map[string]units.Unit{},
+				},
 			},
 			ExpPanic: testhelper.MkExpPanic(
 				dfltParamName + ": unitsetter.UnitSetter Check failed: " +
@@ -73,12 +85,48 @@ func TestUnitSetter(t *testing.T) {
 				"'nonesuch' is not a recognised unit of distance."),
 		},
 		{
+			ID: testhelper.MkID("distance-bad-unit-close-match"),
+			PSetter: unitsetter.UnitSetter{
+				Value: &u,
+				UD:    units.GetUnitDetailsOrPanic(units.Distance),
+			},
+			ParamVal: "killometre",
+			SetWithValErr: testhelper.MkExpErr(
+				"'killometre' is not a recognised unit of distance.",
+				"Did you mean: kilometre or kilometres or kilometer"),
+		},
+		{
 			ID: testhelper.MkID("distance-good-unit"),
 			PSetter: unitsetter.UnitSetter{
 				Value: &u,
 				UD:    units.GetUnitDetailsOrPanic(units.Distance),
 			},
-			ParamVal: "mile",
+			ParamVal:     "mile",
+			ValDescriber: true,
+		},
+		{
+			ID: testhelper.MkID("distance-good-unit-named-val"),
+			PSetter: unitsetter.UnitSetter{
+				Value:   &u,
+				UD:      units.GetUnitDetailsOrPanic(units.Distance),
+				ValDesc: "val-name",
+			},
+			ParamVal:     "mile",
+			ValDescriber: true,
+		},
+		{
+			ID: testhelper.MkID("distance-failing-check"),
+			PSetter: unitsetter.UnitSetter{
+				Value: &u,
+				UD:    units.GetUnitDetailsOrPanic(units.Distance),
+				Checks: []unitsetter.UnitCheckFunc{
+					func(u units.Unit) error {
+						return errors.New("always fails")
+					},
+				},
+			},
+			SetWithValErr: testhelper.MkExpErr("always fails"),
+			ParamVal:      "mile",
 		},
 	}
 

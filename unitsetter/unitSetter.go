@@ -44,6 +44,7 @@ func (s UnitSetter) suggestAltVal(val string) string {
 		strdist.CaseBlindCosineFinder.FindNStrLike(3, val, s.validNames()...)
 
 	if len(matches) > 0 {
+		sort.Strings(matches)
 		suggestedNames = " Did you mean: " +
 			strings.Join(matches, " or ") +
 			"?"

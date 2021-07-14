@@ -15,14 +15,19 @@ import (
 type UnitCheckFunc func(units.Unit) error
 
 // UnitSetter allows you to specify a parameter that can be used to set a
-// Unit value. You can also supply a check function that will validate the
+// Unit value. You can also supply check functions that will validate the
 // Value.
+//
+// If you give a ValDesc then that is used as the value description in the
+// help message, otherwise the Unit Family description is used (with spaces
+// replaced by dashes)
 type UnitSetter struct {
 	psetter.ValueReqMandatory
 
-	Value  *units.Unit
-	UD     units.UnitDetails
-	Checks []UnitCheckFunc
+	Value   *units.Unit
+	UD      units.UnitDetails
+	Checks  []UnitCheckFunc
+	ValDesc string
 }
 
 // CountChecks returns the number of check functions
@@ -100,6 +105,15 @@ func (s UnitSetter) AllowedValues() string {
 	rval += psetter.HasChecks(s)
 
 	return rval
+}
+
+// ValDescribe returns a string describing the value that can follow the
+// parameter
+func (s UnitSetter) ValDescribe() string {
+	if s.ValDesc != "" {
+		return s.ValDesc
+	}
+	return strings.ReplaceAll(s.UD.Fam.Description, " ", "-")
 }
 
 // CurrentValue returns the current setting of the parameter value

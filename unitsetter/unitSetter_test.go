@@ -35,7 +35,7 @@ func TestUnitSetter(t *testing.T) {
 		BaseUnitName: "test",
 		Description:  "unit of test",
 	}
-	var dfltUnit = units.Unit{
+	dfltUnit := units.Unit{
 		ConvPreAdd:  1,
 		ConvPostAdd: 2,
 		ConvFactor:  3,
@@ -46,7 +46,7 @@ func TestUnitSetter(t *testing.T) {
 		Notes:       "desc of default Unit value",
 	}
 	var u units.Unit
-	var goodUnitDetails = units.UnitDetails{
+	goodUnitDetails := units.UnitDetails{
 		Fam: goodFam,
 		AltU: map[string]units.Unit{
 			"test": {

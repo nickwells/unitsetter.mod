@@ -58,10 +58,9 @@ func (s UnitSetter) suggestAltVal(val string) string {
 // error. Only if the value is parsed successfully and no checks are violated
 // is the Value set.
 func (s UnitSetter) SetWithVal(_ string, paramVal string) error {
-	v, ok := s.UD.AltU[paramVal]
-	if !ok {
-		return fmt.Errorf("'%s' is not a recognised %s.%s",
-			paramVal, s.UD.Fam.Description, s.suggestAltVal(paramVal))
+	v, err := s.UD.GetUnit(paramVal)
+	if err != nil {
+		return fmt.Errorf("%v.%s", err, s.suggestAltVal(paramVal))
 	}
 
 	if len(s.Checks) != 0 {

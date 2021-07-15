@@ -137,7 +137,7 @@ func TestUnitSetter(t *testing.T) {
 			},
 			ParamVal: "nonesuch",
 			SetWithValErr: testhelper.MkExpErr(
-				"'nonesuch' is not a recognised unit of test."),
+				`there is no unit of test called "nonesuch".`),
 		},
 		{
 			ID: testhelper.MkID("good-unit-details-bad-val-close-match"),
@@ -147,7 +147,7 @@ func TestUnitSetter(t *testing.T) {
 			},
 			ParamVal: "other-unnit",
 			SetWithValErr: testhelper.MkExpErr(
-				"'other-unnit' is not a recognised unit of test.",
+				`there is no unit of test called "other-unnit".`,
 				"Did you mean: other-unit or other-units or otherunit"),
 		},
 		{

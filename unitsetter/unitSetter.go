@@ -7,7 +7,7 @@ import (
 
 	"github.com/nickwells/param.mod/v5/param/psetter"
 	"github.com/nickwells/strdist.mod/strdist"
-	"github.com/nickwells/units.mod/units"
+	"github.com/nickwells/units.mod/v2/units"
 )
 
 // UnitCheckFunc is the type of the check function for this setter. It takes
@@ -25,7 +25,7 @@ type UnitSetter struct {
 	psetter.ValueReqMandatory
 
 	Value   *units.Unit
-	UD      units.UnitDetails
+	F       *units.Family
 	Checks  []UnitCheckFunc
 	ValDesc string
 }
@@ -40,8 +40,10 @@ func (s UnitSetter) CountChecks() int {
 // closest to the given value
 func (s UnitSetter) suggestAltVal(val string) string {
 	suggestedNames := ""
+	names := s.F.GetUnitNames()
+	names = append(names, s.F.GetUnitAliases()...)
 	matches :=
-		strdist.CaseBlindCosineFinder.FindNStrLike(3, val, s.validNames()...)
+		strdist.CaseBlindCosineFinder.FindNStrLike(3, val, names...)
 
 	if len(matches) > 0 {
 		sort.Strings(matches)
@@ -58,7 +60,7 @@ func (s UnitSetter) suggestAltVal(val string) string {
 // error. Only if the value is parsed successfully and no checks are violated
 // is the Value set.
 func (s UnitSetter) SetWithVal(_ string, paramVal string) error {
-	v, err := s.UD.GetUnit(paramVal)
+	v, err := s.F.GetUnit(paramVal)
 	if err != nil {
 		return fmt.Errorf("%v.%s", err, s.suggestAltVal(paramVal))
 	}
@@ -80,34 +82,21 @@ func (s UnitSetter) SetWithVal(_ string, paramVal string) error {
 	return nil
 }
 
-// validNames returns a slice containing the names of allowed values
-func (s UnitSetter) validNames() []string {
-	var names []string
-
-	for k := range s.UD.AltU {
-		names = append(names, k)
-	}
-	for k := range s.UD.Aliases {
-		names = append(names, k)
-	}
-
-	return names
-}
-
 // AllowedValues returns a string describing the allowed values
 func (s UnitSetter) AllowedValues() string {
-	names := s.validNames()
+	names := s.F.GetUnitNames()
 	if len(names) == 0 {
-		return "there are no valid conversions for this unit type: " +
-			s.UD.Fam.Description
+		return "there are no units in this unit family: " +
+			s.F.Description()
 	}
 
+	names = append(names, s.F.GetUnitAliases()...)
 	sort.Slice(names, func(i, j int) bool {
 		// sort the family base name to the front
-		if names[i] == s.UD.Fam.BaseUnitName {
+		if names[i] == s.F.BaseUnitName() {
 			return true
 		}
-		if names[j] == s.UD.Fam.BaseUnitName {
+		if names[j] == s.F.BaseUnitName() {
 			return false
 		}
 
@@ -132,28 +121,31 @@ func (s UnitSetter) ValDescribe() string {
 	if s.ValDesc != "" {
 		return s.ValDesc
 	}
-	return strings.ReplaceAll(s.UD.Fam.Description, " ", "-")
+	return strings.ReplaceAll(s.F.Description(), " ", "-")
 }
 
 // CurrentValue returns the current setting of the parameter value
 func (s UnitSetter) CurrentValue() string {
-	return s.Value.Name
+	return s.Value.Name()
 }
 
 // CheckSetter panics if the setter has not been properly created - if the
 // Value is nil, if the base unit is invalid or if one of the check functions
 // is nil.
 func (s UnitSetter) CheckSetter(name string) {
-	intro := name + ": unitsetter.UnitSetter Check failed: "
+	intro := name + ": unitsetter.UnitSetter Check failed:"
 	if s.Value == nil {
-		panic(intro + "the Value to be set is nil")
+		panic(intro + " the Value to be set is nil")
 	}
-	if s.UD.AltU == nil || len(s.UD.AltU) == 0 {
-		panic(intro + "there are no valid alternative units")
+	if s.F == nil {
+		panic(intro + " the Family (F) has not been set")
+	}
+	if len(s.F.GetUnitNames()) == 0 {
+		panic(fmt.Sprintf("%s the Family (%q) has no units", intro, s.F.Name()))
 	}
 	for _, check := range s.Checks {
 		if check == nil {
-			panic(intro + "one of the check functions is nil")
+			panic(intro + " one of the check functions is nil")
 		}
 	}
 }

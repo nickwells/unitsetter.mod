@@ -7,7 +7,7 @@ import (
 	"github.com/nickwells/param.mod/v5/param"
 	"github.com/nickwells/param.mod/v5/paramtest"
 	"github.com/nickwells/testhelper.mod/testhelper"
-	"github.com/nickwells/units.mod/units"
+	units "github.com/nickwells/units.mod/v2/units"
 	"github.com/nickwells/unitsetter.mod/v3/unitsetter"
 )
 
@@ -31,98 +31,43 @@ func init() {
 
 func TestUnitSetter(t *testing.T) {
 	const dfltParamName = "set-unit"
-	goodFam := units.Family{
-		BaseUnitName: "test",
-		Description:  "unit of test",
-	}
-	dfltUnit := units.Unit{
-		ConvPreAdd:  1,
-		ConvPostAdd: 2,
-		ConvFactor:  3,
-		Fam:         goodFam,
-		Abbrev:      "dflt",
-		Name:        "dflt",
-		NamePlural:  "dflts",
-		Notes:       "desc of default Unit value",
-	}
 	var u units.Unit
-	goodUnitDetails := units.UnitDetails{
-		Fam: goodFam,
-		AltU: map[string]units.Unit{
-			"test": {
-				ConvPreAdd:  0,
-				ConvPostAdd: 0,
-				ConvFactor:  1,
-				Fam:         goodFam,
-				Abbrev:      "t",
-				Name:        "test",
-				NamePlural:  "tests",
-				Notes:       "desc",
-			},
-			"other-unit": {
-				ConvPreAdd:  0,
-				ConvPostAdd: 0,
-				ConvFactor:  2,
-				Fam:         goodFam,
-				Abbrev:      "o-u-t",
-				Name:        "o-u-test",
-				NamePlural:  "o-u-tests",
-				Notes:       "desc of other-unit",
-			},
-			"otherunit": {
-				ConvPreAdd:  0,
-				ConvPostAdd: 0,
-				ConvFactor:  3,
-				Fam:         goodFam,
-				Abbrev:      "ou-t",
-				Name:        "ou-test",
-				NamePlural:  "ou-tests",
-				Notes:       "desc of otherunit",
-			},
-		},
-		Aliases: map[string]units.Alias{
-			"other-units": {
-				UnitName: "other-unit",
-				Notes:    "plural",
-			},
-		},
-	}
 	testCases := []paramtest.Setter{
 		{
 			ID: testhelper.MkID("bad-value"),
 			PSetter: unitsetter.UnitSetter{
-				UD: goodUnitDetails,
+				F: units.SampleFamily,
 			},
 			ExpPanic: testhelper.MkExpPanic(
 				dfltParamName + ": unitsetter.UnitSetter Check failed: " +
 					"the Value to be set is nil"),
 		},
 		{
-			ID: testhelper.MkID("bad-unit-details-nil-AltU"),
+			ID: testhelper.MkID("bad-setter-no-Family"),
 			PSetter: unitsetter.UnitSetter{
 				Value: &u,
 			},
 			ExpPanic: testhelper.MkExpPanic(
 				dfltParamName + ": unitsetter.UnitSetter Check failed: " +
-					"there are no valid alternative units"),
+					"the Family (F) has not been set"),
 		},
 		{
-			ID: testhelper.MkID("bad-unit-details-empty-AltU"),
+			ID: testhelper.MkID("bad-setter-no-units"),
 			PSetter: unitsetter.UnitSetter{
 				Value: &u,
-				UD: units.UnitDetails{
-					AltU: map[string]units.Unit{},
-				},
+				F:     units.BadSampleFamily,
 			},
 			ExpPanic: testhelper.MkExpPanic(
 				dfltParamName + ": unitsetter.UnitSetter Check failed: " +
-					"there are no valid alternative units"),
+					`the Family ("` +
+					units.BadSampleFamily.Name() +
+					`") has no units`),
 		},
 		{
-			ID: testhelper.MkID("bad-unit-details-nil-checkfunc"),
+			ID: testhelper.MkID("bad-setter-nil-checkfunc"),
 			PSetter: unitsetter.UnitSetter{
 				Value:  &u,
-				UD:     goodUnitDetails,
+				F:      units.SampleFamily,
 				Checks: []unitsetter.UnitCheckFunc{nil},
 			},
 			ExpPanic: testhelper.MkExpPanic(
@@ -130,50 +75,50 @@ func TestUnitSetter(t *testing.T) {
 					"one of the check functions is nil"),
 		},
 		{
-			ID: testhelper.MkID("good-unit-details-bad-val"),
+			ID: testhelper.MkID("good-setter-bad-val"),
 			PSetter: unitsetter.UnitSetter{
 				Value: &u,
-				UD:    goodUnitDetails,
+				F:     units.SampleFamily,
 			},
 			ParamVal: "nonesuch",
 			SetWithValErr: testhelper.MkExpErr(
 				`there is no unit of test called "nonesuch".`),
 		},
 		{
-			ID: testhelper.MkID("good-unit-details-bad-val-close-match"),
+			ID: testhelper.MkID("good-setter-bad-val-close-match"),
 			PSetter: unitsetter.UnitSetter{
 				Value: &u,
-				UD:    goodUnitDetails,
+				F:     units.SampleFamily,
 			},
-			ParamVal: "other-unnit",
+			ParamVal: "sampl",
 			SetWithValErr: testhelper.MkExpErr(
-				`there is no unit of test called "other-unnit".`,
-				"Did you mean: other-unit or other-units or otherunit"),
+				`there is no unit of test called "sampl".`,
+				"Did you mean: sample"),
 		},
 		{
-			ID: testhelper.MkID("good-unit-details-good-val"),
+			ID: testhelper.MkID("good-setter-good-val"),
 			PSetter: unitsetter.UnitSetter{
 				Value: &u,
-				UD:    goodUnitDetails,
+				F:     units.SampleFamily,
 			},
-			ParamVal:     "other-unit",
+			ParamVal:     units.SampleUnitA,
 			ValDescriber: true,
 		},
 		{
-			ID: testhelper.MkID("good-unit-details-good-val-described-val"),
+			ID: testhelper.MkID("good-setter-good-val-described-val"),
 			PSetter: unitsetter.UnitSetter{
 				Value:   &u,
-				UD:      goodUnitDetails,
+				F:       units.SampleFamily,
 				ValDesc: "val-name",
 			},
-			ParamVal:     "other-unit",
+			ParamVal:     units.SampleUnitA,
 			ValDescriber: true,
 		},
 		{
-			ID: testhelper.MkID("good-unit-details-good-val-failing-check"),
+			ID: testhelper.MkID("good-setter-good-val-failing-check"),
 			PSetter: unitsetter.UnitSetter{
 				Value: &u,
-				UD:    goodUnitDetails,
+				F:     units.SampleFamily,
 				Checks: []unitsetter.UnitCheckFunc{
 					func(u units.Unit) error {
 						return errors.New("always fails")
@@ -181,7 +126,7 @@ func TestUnitSetter(t *testing.T) {
 				},
 			},
 			SetWithValErr: testhelper.MkExpErr("always fails"),
-			ParamVal:      "other-unit",
+			ParamVal:      units.SampleUnitA,
 		},
 	}
 
@@ -192,7 +137,7 @@ func TestUnitSetter(t *testing.T) {
 		}
 		tc.SetVR(param.Mandatory)
 
-		u = dfltUnit
+		u = units.SampleFamily.GetUnitOrPanic(units.SampleFamily.BaseUnitName())
 
 		tc.Test(t)
 	}

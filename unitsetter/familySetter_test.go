@@ -6,8 +6,8 @@ import (
 	"github.com/nickwells/param.mod/v5/param"
 	"github.com/nickwells/param.mod/v5/paramtest"
 	"github.com/nickwells/testhelper.mod/testhelper"
-	units "github.com/nickwells/units.mod/v2/units"
-	"github.com/nickwells/unitsetter.mod/v3/unitsetter"
+	"github.com/nickwells/units.mod/v2/units"
+	"github.com/nickwells/unitsetter.mod/v4/unitsetter"
 )
 
 const (

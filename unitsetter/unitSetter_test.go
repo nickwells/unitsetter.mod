@@ -6,7 +6,7 @@ import (
 
 	"github.com/nickwells/param.mod/v5/param"
 	"github.com/nickwells/param.mod/v5/paramtest"
-	"github.com/nickwells/testhelper.mod/testhelper"
+	"github.com/nickwells/testhelper.mod/v2/testhelper"
 	"github.com/nickwells/units.mod/v2/units"
 	"github.com/nickwells/unitsetter.mod/v4/unitsetter"
 )

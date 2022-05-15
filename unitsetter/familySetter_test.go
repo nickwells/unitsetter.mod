@@ -57,7 +57,7 @@ func TestFamilySetter(t *testing.T) {
 			ParamVal: "dostance",
 			SetWithValErr: testhelper.MkExpErr(
 				`There is no unit family called "dostance".`,
-				"Did you mean: distance?"),
+				`Did you mean: "distance"?`),
 		},
 		{
 			ID: testhelper.MkID("good-setter-good-val"),

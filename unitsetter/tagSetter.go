@@ -21,18 +21,10 @@ type TagSetter struct {
 // value. It will find those strings in the set of possible values that are
 // closest to the given value
 func (s TagSetter) suggestAltVal(val string) string {
-	suggestedNames := ""
-	matches :=
-		strdist.CaseBlindCosineFinder.FindNStrLike(
-			3, val, units.GetTagNames()...)
+	matches := strdist.CaseBlindCosineFinder.FindNStrLike(
+		3, val, units.GetTagNames()...)
 
-	if len(matches) > 0 {
-		sort.Strings(matches)
-		suggestedNames = " Did you mean: " +
-			strings.Join(matches, " or ") +
-			"?"
-	}
-	return suggestedNames
+	return suggestionString(matches)
 }
 
 // SetWithVal (called when a value follows the parameter) checks that the

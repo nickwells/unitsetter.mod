@@ -35,23 +35,25 @@ func (s UnitSetter) CountChecks() int {
 	return len(s.Checks)
 }
 
+// suggestionString returns a string suggesting the supplied values or the
+// empty string if there are no values.
+func suggestionString(vals []string) string {
+	if len(vals) > 0 {
+		sort.Strings(vals)
+		return ` Did you mean: "` + strings.Join(vals, `" or "`) + `"?`
+	}
+	return ``
+}
+
 // suggestAltVal will suggest a possible alternative value for the parameter
 // value. It will find those strings in the set of possible values that are
 // closest to the given value
 func (s UnitSetter) suggestAltVal(val string) string {
-	suggestedNames := ""
 	names := s.F.GetUnitNames()
 	names = append(names, s.F.GetUnitAliases()...)
-	matches :=
-		strdist.CaseBlindCosineFinder.FindNStrLike(3, val, names...)
+	matches := strdist.CaseBlindCosineFinder.FindNStrLike(3, val, names...)
 
-	if len(matches) > 0 {
-		sort.Strings(matches)
-		suggestedNames = " Did you mean: " +
-			strings.Join(matches, " or ") +
-			"?"
-	}
-	return suggestedNames
+	return suggestionString(matches)
 }
 
 // SetWithVal (called when a value follows the parameter) checks that the

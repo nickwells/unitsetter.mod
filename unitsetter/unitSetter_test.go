@@ -93,7 +93,7 @@ func TestUnitSetter(t *testing.T) {
 			ParamVal: "sampl",
 			SetWithValErr: testhelper.MkExpErr(
 				`there is no unit of test called "sampl".`,
-				"Did you mean: sample"),
+				`Did you mean: "sample"`),
 		},
 		{
 			ID: testhelper.MkID("good-setter-good-val"),

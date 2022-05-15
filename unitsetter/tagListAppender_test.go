@@ -57,7 +57,7 @@ func TestTagListAppender(t *testing.T) {
 			ParamVal: "histeric",
 			SetWithValErr: testhelper.MkExpErr(
 				`There is no unit tag called "histeric".`,
-				"Did you mean: historic?"),
+				`Did you mean: "historic"?`),
 		},
 		{
 			ID: testhelper.MkID("good-setter-good-val"),

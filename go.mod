@@ -1,7 +1,7 @@
 module github.com/nickwells/unitsetter.mod/v4
 
 require (
-	github.com/nickwells/param.mod/v5 v5.15.1
+	github.com/nickwells/param.mod/v5 v5.15.2
 	github.com/nickwells/strdist.mod v1.1.6
 	github.com/nickwells/testhelper.mod/v2 v2.0.1
 	github.com/nickwells/units.mod/v2 v2.1.4
@@ -19,8 +19,9 @@ require (
 	github.com/nickwells/mathutil.mod/v2 v2.0.1 // indirect
 	github.com/nickwells/pager.mod v1.0.10 // indirect
 	github.com/nickwells/twrap.mod v1.4.18 // indirect
-	golang.org/x/exp v0.0.0-20220907003533-145caa8ea1d0 // indirect
-	golang.org/x/sys v0.0.0-20220907062415-87db552b00fd // indirect
+	github.com/nickwells/xdg.mod v1.0.8 // indirect
+	golang.org/x/exp v0.0.0-20220909182711-5c715a9e8561 // indirect
+	golang.org/x/sys v0.0.0-20220909162455-aba9fc2a8ff2 // indirect
 	golang.org/x/term v0.0.0-20220722155259-a9ba230a4035 // indirect
 )
 

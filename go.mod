@@ -2,26 +2,26 @@ module github.com/nickwells/unitsetter.mod/v4
 
 require (
 	github.com/nickwells/param.mod/v5 v5.15.3
-	github.com/nickwells/strdist.mod v1.1.7
-	github.com/nickwells/testhelper.mod/v2 v2.0.2
-	github.com/nickwells/units.mod/v2 v2.1.5
+	github.com/nickwells/strdist.mod v1.1.8
+	github.com/nickwells/testhelper.mod/v2 v2.1.0
+	github.com/nickwells/units.mod/v2 v2.1.6
 )
 
 require github.com/nickwells/tempus.mod v1.0.1 // indirect
 
 require (
-	github.com/nickwells/check.mod/v2 v2.1.5 // indirect
-	github.com/nickwells/english.mod v1.1.1 // indirect
-	github.com/nickwells/errutil.mod v1.2.5 // indirect
-	github.com/nickwells/filecheck.mod v1.1.16 // indirect
-	github.com/nickwells/fileparse.mod v1.1.27 // indirect
-	github.com/nickwells/location.mod v1.2.23 // indirect
-	github.com/nickwells/mathutil.mod/v2 v2.0.2 // indirect
+	github.com/nickwells/check.mod/v2 v2.1.6 // indirect
+	github.com/nickwells/english.mod v1.1.2 // indirect
+	github.com/nickwells/errutil.mod v1.2.6 // indirect
+	github.com/nickwells/filecheck.mod v1.1.17 // indirect
+	github.com/nickwells/fileparse.mod v1.1.28 // indirect
+	github.com/nickwells/location.mod v1.2.24 // indirect
+	github.com/nickwells/mathutil.mod/v2 v2.0.3 // indirect
 	github.com/nickwells/pager.mod v1.0.11 // indirect
-	github.com/nickwells/twrap.mod v1.4.19 // indirect
-	golang.org/x/exp v0.0.0-20220921164117-439092de6870 // indirect
-	golang.org/x/sys v0.0.0-20220919091848-fb04ddd9f9c8 // indirect
-	golang.org/x/term v0.0.0-20220919170432-7a66f970e087 // indirect
+	github.com/nickwells/twrap.mod v1.4.20 // indirect
+	golang.org/x/exp v0.0.0-20230130200758-8bd7c9d05862 // indirect
+	golang.org/x/sys v0.4.0 // indirect
+	golang.org/x/term v0.4.0 // indirect
 )
 
 go 1.18

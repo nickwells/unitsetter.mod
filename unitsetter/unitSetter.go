@@ -5,7 +5,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/nickwells/param.mod/v5/param/psetter"
+	"github.com/nickwells/param.mod/v6/psetter"
 	"github.com/nickwells/strdist.mod/strdist"
 	"github.com/nickwells/units.mod/v2/units"
 )

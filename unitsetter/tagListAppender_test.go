@@ -3,8 +3,8 @@ package unitsetter_test
 import (
 	"testing"
 
-	"github.com/nickwells/param.mod/v5/param"
-	"github.com/nickwells/param.mod/v5/paramtest"
+	"github.com/nickwells/param.mod/v6/param"
+	"github.com/nickwells/param.mod/v6/paramtest"
 	"github.com/nickwells/testhelper.mod/v2/testhelper"
 	"github.com/nickwells/units.mod/v2/units"
 	"github.com/nickwells/unitsetter.mod/v4/unitsetter"

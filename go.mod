@@ -1,7 +1,7 @@
 module github.com/nickwells/unitsetter.mod/v4
 
 require (
-	github.com/nickwells/param.mod/v6 v6.0.0
+	github.com/nickwells/param.mod/v6 v6.0.1
 	github.com/nickwells/strdist.mod v1.1.12
 	github.com/nickwells/testhelper.mod/v2 v2.3.0
 	github.com/nickwells/units.mod/v2 v2.1.11

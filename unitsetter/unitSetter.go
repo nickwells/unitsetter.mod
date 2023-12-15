@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	"github.com/nickwells/param.mod/v6/psetter"
-	"github.com/nickwells/strdist.mod/strdist"
+	"github.com/nickwells/strdist.mod/v2/strdist"
 	"github.com/nickwells/units.mod/v2/units"
 )
 
@@ -51,7 +51,8 @@ func suggestionString(vals []string) string {
 func (s UnitSetter) suggestAltVal(val string) string {
 	names := s.F.GetUnitNames()
 	names = append(names, s.F.GetUnitAliases()...)
-	matches := strdist.CaseBlindCosineFinder.FindNStrLike(3, val, names...)
+	finder := strdist.DefaultFinders[strdist.CaseBlindAlgoNameCosine]
+	matches := finder.FindNStrLike(3, val, names...)
 
 	return suggestionString(matches)
 }

@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	"github.com/nickwells/param.mod/v6/psetter"
-	"github.com/nickwells/strdist.mod/strdist"
+	"github.com/nickwells/strdist.mod/v2/strdist"
 	"github.com/nickwells/units.mod/v2/units"
 )
 
@@ -21,8 +21,8 @@ type FamilySetter struct {
 // value. It will find those strings in the set of possible values that are
 // closest to the given value
 func (s FamilySetter) suggestAltVal(val string) string {
-	matches := strdist.CaseBlindCosineFinder.FindNStrLike(
-		3, val, units.GetFamilyNames()...)
+	finder := strdist.DefaultFinders[strdist.CaseBlindAlgoNameCosine]
+	matches := finder.FindNStrLike(3, val, units.GetFamilyNames()...)
 
 	return suggestionString(matches)
 }

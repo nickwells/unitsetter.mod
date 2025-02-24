@@ -42,6 +42,7 @@ func suggestionString(vals []string) string {
 		sort.Strings(vals)
 		return ` Did you mean: "` + strings.Join(vals, `" or "`) + `"?`
 	}
+
 	return ``
 }
 
@@ -52,7 +53,7 @@ func (s UnitSetter) suggestAltVal(val string) string {
 	names := s.F.GetUnitNames()
 	names = append(names, s.F.GetUnitAliases()...)
 	finder := strdist.DefaultFinders[strdist.CaseBlindAlgoNameCosine]
-	matches := finder.FindNStrLike(3, val, names...)
+	matches := finder.FindNStrLike(alternativeCount, val, names...)
 
 	return suggestionString(matches)
 }
@@ -82,6 +83,7 @@ func (s UnitSetter) SetWithVal(_ string, paramVal string) error {
 	}
 
 	*s.Value = v
+
 	return nil
 }
 
@@ -99,6 +101,7 @@ func (s UnitSetter) AllowedValues() string {
 		if names[i] == s.F.BaseUnitName() {
 			return true
 		}
+
 		if names[j] == s.F.BaseUnitName() {
 			return false
 		}
@@ -111,6 +114,7 @@ func (s UnitSetter) AllowedValues() string {
 		// then alphabetically
 		return names[i] < names[j]
 	})
+
 	rval := strings.Join(names, ", ")
 
 	rval += psetter.HasChecks(s)
@@ -124,6 +128,7 @@ func (s UnitSetter) ValDescribe() string {
 	if s.ValDesc != "" {
 		return s.ValDesc
 	}
+
 	return strings.ReplaceAll(s.F.Description(), " ", "-")
 }
 
@@ -137,15 +142,19 @@ func (s UnitSetter) CurrentValue() string {
 // is nil.
 func (s UnitSetter) CheckSetter(name string) {
 	intro := name + ": unitsetter.UnitSetter Check failed:"
+
 	if s.Value == nil {
 		panic(intro + " the Value to be set is nil")
 	}
+
 	if s.F == nil {
 		panic(intro + " the Family (F) has not been set")
 	}
+
 	if len(s.F.GetUnitNames()) == 0 {
 		panic(fmt.Sprintf("%s the Family (%q) has no units", intro, s.F.Name()))
 	}
+
 	for _, check := range s.Checks {
 		if check == nil {
 			panic(intro + " one of the check functions is nil")

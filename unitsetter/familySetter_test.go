@@ -30,6 +30,7 @@ func init() {
 
 func TestFamilySetter(t *testing.T) {
 	const dfltParamName = "set-family"
+
 	var f *units.Family
 
 	testCases := []paramtest.Setter{
@@ -81,6 +82,7 @@ func TestFamilySetter(t *testing.T) {
 		if tc.ParamName == "" {
 			tc.ParamName = dfltParamName
 		}
+
 		tc.SetVR(param.Mandatory)
 
 		f = units.SampleFamily

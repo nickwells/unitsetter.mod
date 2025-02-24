@@ -10,6 +10,8 @@ import (
 	"github.com/nickwells/units.mod/v2/units"
 )
 
+const alternativeCount = 3
+
 // FamilySetter is a parameter setter used to populate units.Family values.
 type FamilySetter struct {
 	psetter.ValueReqMandatory
@@ -22,7 +24,8 @@ type FamilySetter struct {
 // closest to the given value
 func (s FamilySetter) suggestAltVal(val string) string {
 	finder := strdist.DefaultFinders[strdist.CaseBlindAlgoNameCosine]
-	matches := finder.FindNStrLike(3, val, units.GetFamilyNames()...)
+	matches := finder.FindNStrLike(
+		alternativeCount, val, units.GetFamilyNames()...)
 
 	return suggestionString(matches)
 }
@@ -39,6 +42,7 @@ func (s FamilySetter) SetWithVal(_ string, paramVal string) error {
 	}
 
 	*s.Value = v
+
 	return nil
 }
 
@@ -64,6 +68,7 @@ func (s FamilySetter) CurrentValue() string {
 	if *s.Value == nil {
 		return ""
 	}
+
 	return (*s.Value).Name()
 }
 

@@ -30,6 +30,7 @@ func init() {
 
 func TestTagListAppender(t *testing.T) {
 	const dfltParamName = "set-tag"
+
 	var tags []units.Tag
 
 	testCases := []paramtest.Setter{
@@ -73,6 +74,7 @@ func TestTagListAppender(t *testing.T) {
 		if tc.ParamName == "" {
 			tc.ParamName = dfltParamName
 		}
+
 		tc.SetVR(param.Mandatory)
 
 		tags = []units.Tag{}

@@ -31,7 +31,9 @@ func init() {
 
 func TestUnitSetter(t *testing.T) {
 	const dfltParamName = "set-unit"
+
 	var u units.Unit
+
 	testCases := []paramtest.Setter{
 		{
 			ID: testhelper.MkID("bad-value"),
@@ -120,7 +122,7 @@ func TestUnitSetter(t *testing.T) {
 				Value: &u,
 				F:     units.SampleFamily,
 				Checks: []unitsetter.UnitCheckFunc{
-					func(u units.Unit) error {
+					func(_ units.Unit) error {
 						return errors.New("always fails")
 					},
 				},
@@ -135,6 +137,7 @@ func TestUnitSetter(t *testing.T) {
 		if tc.ParamName == "" {
 			tc.ParamName = dfltParamName
 		}
+
 		tc.SetVR(param.Mandatory)
 
 		u = units.SampleFamily.GetUnitOrPanic(units.SampleFamily.BaseUnitName())

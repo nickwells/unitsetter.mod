@@ -23,7 +23,7 @@ type TagSetter struct {
 func (s TagSetter) suggestAltVal(val string) string {
 	finder := strdist.DefaultFinders[strdist.CaseBlindAlgoNameCosine]
 	matches := finder.FindNStrLike(
-		3, val, units.GetTagNames()...)
+		alternativeCount, val, units.GetTagNames()...)
 
 	return suggestionString(matches)
 }
@@ -41,6 +41,7 @@ func (s TagSetter) SetWithVal(_ string, paramVal string) error {
 	}
 
 	*s.Value = tag
+
 	return nil
 }
 
@@ -64,6 +65,7 @@ func (s TagSetter) CurrentValue() string {
 	if s.Value == nil {
 		return ""
 	}
+
 	return string(*s.Value)
 }
 

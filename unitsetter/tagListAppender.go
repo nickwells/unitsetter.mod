@@ -23,7 +23,8 @@ type TagListAppender struct {
 // closest to the given value
 func (s TagListAppender) suggestAltVal(val string) string {
 	finder := strdist.DefaultFinders[strdist.CaseBlindAlgoNameCosine]
-	matches := finder.FindNStrLike(3, val, units.GetTagNames()...)
+	matches := finder.FindNStrLike(
+		alternativeCount, val, units.GetTagNames()...)
 
 	return suggestionString(matches)
 }
@@ -47,6 +48,7 @@ func (s TagListAppender) SetWithVal(_ string, paramVal string) error {
 	}
 
 	*s.Value = append(*s.Value, tag)
+
 	return nil
 }
 
@@ -70,8 +72,10 @@ func (s TagListAppender) CurrentValue() string {
 	if s.Value == nil {
 		return ""
 	}
+
 	rval := ""
 	sep := ""
+
 	for _, tag := range *s.Value {
 		rval += sep + string(tag)
 		sep = ", "
@@ -84,6 +88,7 @@ func (s TagListAppender) CurrentValue() string {
 // Value is nil.
 func (s TagListAppender) CheckSetter(name string) {
 	intro := name + ": unitsetter.TagListAppender Check failed: "
+
 	if s.Value == nil {
 		panic(intro + "the Value to be set is nil")
 	}

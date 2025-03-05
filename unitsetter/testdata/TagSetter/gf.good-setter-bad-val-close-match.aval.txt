@@ -1,1 +1,1 @@
-SI, US customary, astronomical, colloquial, computing, dimensionless, drink, historic, imperial, metric, nautical, physics, printing, trigonometric
+SI, US customary, apothecary, astronomical, colloquial, computing, dimensionless, drink, historic, imperial, metric, nautical, physics, printing, trigonometric

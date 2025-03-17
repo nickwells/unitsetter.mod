@@ -1,6 +1,7 @@
 module github.com/nickwells/unitsetter.mod/v4
 
 require (
+	github.com/nickwells/english.mod v1.2.0
 	github.com/nickwells/param.mod/v6 v6.2.1
 	github.com/nickwells/strdist.mod/v2 v2.0.1
 	github.com/nickwells/testhelper.mod/v2 v2.3.1
@@ -14,7 +15,6 @@ require (
 
 require (
 	github.com/nickwells/check.mod/v2 v2.1.16 // indirect
-	github.com/nickwells/english.mod v1.2.0 // indirect
 	github.com/nickwells/errutil.mod v1.2.15 // indirect
 	github.com/nickwells/filecheck.mod v1.2.2 // indirect
 	github.com/nickwells/fileparse.mod v1.1.32 // indirect

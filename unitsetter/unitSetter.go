@@ -5,6 +5,7 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/nickwells/english.mod/english"
 	"github.com/nickwells/param.mod/v6/psetter"
 	"github.com/nickwells/strdist.mod/v2/strdist"
 	"github.com/nickwells/units.mod/v2/units"
@@ -40,7 +41,10 @@ func (s UnitSetter) CountChecks() int {
 func suggestionString(vals []string) string {
 	if len(vals) > 0 {
 		sort.Strings(vals)
-		return ` Did you mean: "` + strings.Join(vals, `" or "`) + `"?`
+
+		return " Did you mean: " +
+			english.JoinQuoted(vals, ", ", " or ", `"`, `"`) +
+			"?"
 	}
 
 	return ``

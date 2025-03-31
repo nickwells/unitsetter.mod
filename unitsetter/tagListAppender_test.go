@@ -48,7 +48,7 @@ func TestTagListAppender(t *testing.T) {
 			},
 			ParamVal: "nonesuch",
 			SetWithValErr: testhelper.MkExpErr(
-				`There is no unit tag called "nonesuch".`),
+				`there is no unit tag called "nonesuch".`),
 		},
 		{
 			ID: testhelper.MkID("good-setter-bad-val-close-match"),
@@ -57,7 +57,7 @@ func TestTagListAppender(t *testing.T) {
 			},
 			ParamVal: "histeric",
 			SetWithValErr: testhelper.MkExpErr(
-				`There is no unit tag called "histeric".`,
+				`there is no unit tag called "histeric".`,
 				`Did you mean: "historic"?`),
 		},
 		{

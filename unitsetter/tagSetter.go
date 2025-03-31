@@ -36,7 +36,7 @@ func (s TagSetter) suggestAltVal(val string) string {
 func (s TagSetter) SetWithVal(_ string, paramVal string) error {
 	tag := units.Tag(paramVal)
 	if !tag.IsValid() {
-		return fmt.Errorf("There is no unit tag called %q.%s",
+		return fmt.Errorf("there is no unit tag called %q.%s",
 			tag, s.suggestAltVal(paramVal))
 	}
 

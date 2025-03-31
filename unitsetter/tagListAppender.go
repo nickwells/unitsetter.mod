@@ -37,13 +37,13 @@ func (s TagListAppender) suggestAltVal(val string) string {
 func (s TagListAppender) SetWithVal(_ string, paramVal string) error {
 	tag := units.Tag(paramVal)
 	if !tag.IsValid() {
-		return fmt.Errorf("There is no unit tag called %q.%s",
+		return fmt.Errorf("there is no unit tag called %q.%s",
 			tag, s.suggestAltVal(paramVal))
 	}
 
 	for _, existingTag := range *s.Value {
 		if existingTag == tag {
-			return fmt.Errorf("Tag  %q is already in the list of tags", tag)
+			return fmt.Errorf("tag  %q is already in the list of tags", tag)
 		}
 	}
 

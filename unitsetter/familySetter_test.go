@@ -48,7 +48,7 @@ func TestFamilySetter(t *testing.T) {
 			},
 			ParamVal: "nonesuch",
 			SetWithValErr: testhelper.MkExpErr(
-				`There is no unit family called "nonesuch".`),
+				`there is no unit family called "nonesuch".`),
 		},
 		{
 			ID: testhelper.MkID("good-setter-bad-val-close-match"),
@@ -57,7 +57,7 @@ func TestFamilySetter(t *testing.T) {
 			},
 			ParamVal: "dostance",
 			SetWithValErr: testhelper.MkExpErr(
-				`There is no unit family called "dostance".`,
+				`there is no unit family called "dostance".`,
 				`Did you mean: "distance"?`),
 		},
 		{

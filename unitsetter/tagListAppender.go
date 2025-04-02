@@ -2,6 +2,7 @@ package unitsetter
 
 import (
 	"fmt"
+	"slices"
 	"sort"
 	"strings"
 
@@ -41,10 +42,8 @@ func (s TagListAppender) SetWithVal(_ string, paramVal string) error {
 			tag, s.suggestAltVal(paramVal))
 	}
 
-	for _, existingTag := range *s.Value {
-		if existingTag == tag {
-			return fmt.Errorf("tag  %q is already in the list of tags", tag)
-		}
+	if slices.Contains(*s.Value, tag) {
+		return fmt.Errorf("tag  %q is already in the list of tags", tag)
 	}
 
 	*s.Value = append(*s.Value, tag)

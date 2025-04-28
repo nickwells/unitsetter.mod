@@ -84,7 +84,7 @@ func TestUnitSetter(t *testing.T) {
 			},
 			ParamVal: "nonesuch",
 			SetWithValErr: testhelper.MkExpErr(
-				`there is no unit of test called "nonesuch".`),
+				`there is no unit of test called "nonesuch"`),
 		},
 		{
 			ID: testhelper.MkID("good-setter-bad-val-close-match"),
@@ -94,8 +94,8 @@ func TestUnitSetter(t *testing.T) {
 			},
 			ParamVal: "sampl",
 			SetWithValErr: testhelper.MkExpErr(
-				`there is no unit of test called "sampl".`,
-				`Did you mean: "sample"`),
+				`there is no unit of test called "sampl",`,
+				` did you mean "sample", "sample A" or "smpl"?`),
 		},
 		{
 			ID: testhelper.MkID("good-setter-good-val"),

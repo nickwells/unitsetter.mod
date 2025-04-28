@@ -6,7 +6,6 @@ import (
 	"strings"
 
 	"github.com/nickwells/param.mod/v6/psetter"
-	"github.com/nickwells/strdist.mod/v2/strdist"
 	"github.com/nickwells/units.mod/v2/units"
 )
 
@@ -17,17 +16,6 @@ type TagSetter struct {
 	Value *units.Tag
 }
 
-// suggestAltVal will suggest a possible alternative value for the parameter
-// value. It will find those strings in the set of possible values that are
-// closest to the given value
-func (s TagSetter) suggestAltVal(val string) string {
-	finder := strdist.DefaultFinders[strdist.CaseBlindAlgoNameCosine]
-	matches := finder.FindNStrLike(
-		alternativeCount, val, units.GetTagNames()...)
-
-	return suggestionString(matches)
-}
-
 // SetWithVal (called when a value follows the parameter) checks that the
 // value can be found in the map of Units, if it cannot it returns an
 // error. If there are checks and any check is violated it returns an
@@ -36,8 +24,12 @@ func (s TagSetter) suggestAltVal(val string) string {
 func (s TagSetter) SetWithVal(_ string, paramVal string) error {
 	tag := units.Tag(paramVal)
 	if !tag.IsValid() {
-		return fmt.Errorf("there is no unit tag called %q.%s",
-			tag, s.suggestAltVal(paramVal))
+		return fmt.Errorf("there is no unit tag called %q%s",
+			tag, psetter.SuggestionString(
+				psetter.SuggestedVals(
+					paramVal,
+					units.GetTagNames(),
+				)))
 	}
 
 	*s.Value = tag

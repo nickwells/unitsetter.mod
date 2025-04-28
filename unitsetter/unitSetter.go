@@ -5,9 +5,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/nickwells/english.mod/english"
 	"github.com/nickwells/param.mod/v6/psetter"
-	"github.com/nickwells/strdist.mod/v2/strdist"
 	"github.com/nickwells/units.mod/v2/units"
 )
 
@@ -36,30 +34,14 @@ func (s UnitSetter) CountChecks() int {
 	return len(s.Checks)
 }
 
-// suggestionString returns a string suggesting the supplied values or the
-// empty string if there are no values.
-func suggestionString(vals []string) string {
-	if len(vals) > 0 {
-		sort.Strings(vals)
-
-		return " Did you mean: " +
-			english.JoinQuoted(vals, ", ", " or ", `"`, `"`) +
-			"?"
-	}
-
-	return ``
-}
-
 // suggestAltVal will suggest a possible alternative value for the parameter
 // value. It will find those strings in the set of possible values that are
 // closest to the given value
 func (s UnitSetter) suggestAltVal(val string) string {
 	names := s.F.GetUnitNames()
 	names = append(names, s.F.GetUnitAliases()...)
-	finder := strdist.DefaultFinders[strdist.CaseBlindAlgoNameCosine]
-	matches := finder.FindNStrLike(alternativeCount, val, names...)
 
-	return suggestionString(matches)
+	return psetter.SuggestionString(psetter.SuggestedVals(val, names))
 }
 
 // SetWithVal (called when a value follows the parameter) checks that the
@@ -70,7 +52,7 @@ func (s UnitSetter) suggestAltVal(val string) string {
 func (s UnitSetter) SetWithVal(_ string, paramVal string) error {
 	v, err := s.F.GetUnit(paramVal)
 	if err != nil {
-		return fmt.Errorf("%v.%s", err, s.suggestAltVal(paramVal))
+		return fmt.Errorf("%v%s", err, s.suggestAltVal(paramVal))
 	}
 
 	if len(s.Checks) != 0 {

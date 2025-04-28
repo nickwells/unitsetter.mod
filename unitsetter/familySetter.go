@@ -6,28 +6,14 @@ import (
 	"strings"
 
 	"github.com/nickwells/param.mod/v6/psetter"
-	"github.com/nickwells/strdist.mod/v2/strdist"
 	"github.com/nickwells/units.mod/v2/units"
 )
-
-const alternativeCount = 3
 
 // FamilySetter is a parameter setter used to populate units.Family values.
 type FamilySetter struct {
 	psetter.ValueReqMandatory
 
 	Value **units.Family
-}
-
-// suggestAltVal will suggest a possible alternative value for the parameter
-// value. It will find those strings in the set of possible values that are
-// closest to the given value
-func (s FamilySetter) suggestAltVal(val string) string {
-	finder := strdist.DefaultFinders[strdist.CaseBlindAlgoNameCosine]
-	matches := finder.FindNStrLike(
-		alternativeCount, val, units.GetFamilyNames()...)
-
-	return suggestionString(matches)
 }
 
 // SetWithVal (called when a value follows the parameter) checks that the
@@ -38,7 +24,13 @@ func (s FamilySetter) suggestAltVal(val string) string {
 func (s FamilySetter) SetWithVal(_ string, paramVal string) error {
 	v, err := units.GetFamily(paramVal)
 	if err != nil {
-		return fmt.Errorf("%v.%s", err, s.suggestAltVal(paramVal))
+		return fmt.Errorf("%v%s",
+			err,
+			psetter.SuggestionString(
+				psetter.SuggestedVals(
+					paramVal,
+					units.GetFamilyNames(),
+				)))
 	}
 
 	*s.Value = v

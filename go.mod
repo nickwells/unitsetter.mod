@@ -3,7 +3,7 @@ module github.com/nickwells/unitsetter.mod/v4
 require (
 	github.com/nickwells/param.mod/v6 v6.3.0
 	github.com/nickwells/testhelper.mod/v2 v2.3.2
-	github.com/nickwells/units.mod/v2 v2.1.17
+	github.com/nickwells/units.mod/v2 v2.1.18
 )
 
 require (

@@ -64,15 +64,18 @@ func (s TagListAppender) CurrentValue() string {
 		return ""
 	}
 
-	rval := ""
+	var cv strings.Builder
+
 	sep := ""
 
 	for _, tag := range *s.Value {
-		rval += sep + string(tag)
+		cv.WriteString(sep)
+		cv.WriteString(string(tag))
+
 		sep = ", "
 	}
 
-	return rval
+	return cv.String()
 }
 
 // CheckSetter panics if the setter has not been properly created - if the

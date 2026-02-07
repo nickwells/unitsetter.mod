@@ -5,7 +5,8 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/nickwells/param.mod/v6/psetter"
+	"github.com/nickwells/param.mod/v7/psetter"
+	"github.com/nickwells/strdist.mod/v2/strdist"
 	"github.com/nickwells/units.mod/v2/units"
 )
 
@@ -25,8 +26,8 @@ func (s TagSetter) SetWithVal(_ string, paramVal string) error {
 	tag := units.Tag(paramVal)
 	if !tag.IsValid() {
 		return fmt.Errorf("there is no unit tag called %q%s",
-			tag, psetter.SuggestionString(
-				psetter.SuggestedVals(
+			tag, strdist.SuggestionString(
+				strdist.SuggestedVals(
 					paramVal,
 					units.GetTagNames(),
 				)))

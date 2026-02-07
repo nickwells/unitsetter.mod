@@ -5,7 +5,8 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/nickwells/param.mod/v6/psetter"
+	"github.com/nickwells/param.mod/v7/psetter"
+	"github.com/nickwells/strdist.mod/v2/strdist"
 	"github.com/nickwells/units.mod/v2/units"
 )
 
@@ -41,7 +42,7 @@ func (s UnitSetter) suggestAltVal(val string) string {
 	names := s.F.GetUnitNames()
 	names = append(names, s.F.GetUnitAliases()...)
 
-	return psetter.SuggestionString(psetter.SuggestedVals(val, names))
+	return strdist.SuggestionString(strdist.SuggestedVals(val, names))
 }
 
 // SetWithVal (called when a value follows the parameter) checks that the

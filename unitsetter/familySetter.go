@@ -5,7 +5,8 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/nickwells/param.mod/v6/psetter"
+	"github.com/nickwells/param.mod/v7/psetter"
+	"github.com/nickwells/strdist.mod/v2/strdist"
 	"github.com/nickwells/units.mod/v2/units"
 )
 
@@ -26,8 +27,8 @@ func (s FamilySetter) SetWithVal(_ string, paramVal string) error {
 	if err != nil {
 		return fmt.Errorf("%v%s",
 			err,
-			psetter.SuggestionString(
-				psetter.SuggestedVals(
+			strdist.SuggestionString(
+				strdist.SuggestedVals(
 					paramVal,
 					units.GetFamilyNames(),
 				)))

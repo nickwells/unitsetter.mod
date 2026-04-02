@@ -4,7 +4,7 @@ require (
 	github.com/nickwells/param.mod/v7 v7.1.2
 	github.com/nickwells/strdist.mod/v2 v2.1.1
 	github.com/nickwells/testhelper.mod/v2 v2.5.0
-	github.com/nickwells/units.mod/v2 v2.1.24
+	github.com/nickwells/units.mod/v2 v2.2.0
 )
 
 require github.com/nickwells/tempus.mod v1.2.10 // indirect

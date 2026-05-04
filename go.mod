@@ -1,10 +1,10 @@
 module github.com/nickwells/unitsetter.mod/v4
 
 require (
-	github.com/nickwells/param.mod/v7 v7.2.1
+	github.com/nickwells/param.mod/v7 v7.2.2
 	github.com/nickwells/strdist.mod/v2 v2.1.2
 	github.com/nickwells/testhelper.mod/v2 v2.6.1
-	github.com/nickwells/units.mod/v2 v2.2.1
+	github.com/nickwells/units.mod/v2 v2.2.2
 )
 
 require github.com/nickwells/tempus.mod v1.2.11 // indirect

@@ -3,17 +3,19 @@ package unitsetter
 import (
 	"fmt"
 	"sort"
-	"strings"
 
 	"github.com/nickwells/param.mod/v7/psetter"
+	"github.com/nickwells/param.mod/v7/ptypes"
 	"github.com/nickwells/strdist.mod/v2/strdist"
 	"github.com/nickwells/units.mod/v2/units"
 )
 
-// TagSetter is a parameter setter used to populate units.Tag values.
+// TagSetter is a parameter setter used to populate a units.Tag value.
 type TagSetter struct {
 	psetter.ValueReqMandatory
 
+	// Value must be set, the program will panic if not. This is the Tag
+	// value that this setter is setting.
 	Value *units.Tag
 }
 
@@ -40,11 +42,22 @@ func (s TagSetter) SetWithVal(_ string, paramVal string) error {
 
 // AllowedValues returns a string describing the allowed values
 func (s TagSetter) AllowedValues() string {
+	return "a tag name"
+}
+
+// AllowedValuesMap returns a map of allowed tags. This will be used by the
+// standard help package to generate a list of allowed values.
+func (s TagSetter) AllowedValuesMap() ptypes.AllowedVals[string] {
 	names := units.GetTagNames()
 	sort.Strings(names)
-	rval := strings.Join(names, ", ")
 
-	return rval
+	avm := ptypes.AllowedVals[string]{}
+
+	for _, t := range names {
+		avm[t] = units.Tag(t).Notes()
+	}
+
+	return avm
 }
 
 // ValDescribe returns a string describing the value that can follow the
@@ -66,6 +79,7 @@ func (s TagSetter) CurrentValue() string {
 // Value is nil.
 func (s TagSetter) CheckSetter(name string) {
 	intro := name + ": unitsetter.TagSetter Check failed: "
+
 	if s.Value == nil {
 		panic(intro + "the Value to be set is nil")
 	}

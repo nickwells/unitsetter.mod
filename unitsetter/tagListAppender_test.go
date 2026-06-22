@@ -70,7 +70,7 @@ func TestTagListAppender(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		tc.GFC = commonTagsetterGFC
+		tc.GFC = commonTaglistappenderGFC
 		if tc.ParamName == "" {
 			tc.ParamName = dfltParamName
 		}

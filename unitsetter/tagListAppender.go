@@ -32,7 +32,6 @@ type TagListAppender struct {
 // returns an error if it does.  Only if all these checks pass is the Value
 // set.
 func (s TagListAppender) SetWithVal(_ string, paramVal string) error {
-
 	sep := s.GetSeparator()
 
 	vals := strings.SplitSeq(paramVal, sep)

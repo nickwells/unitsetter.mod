@@ -5,34 +5,32 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/nickwells/check.mod/v2/check"
 	"github.com/nickwells/param.mod/v7/psetter"
 	"github.com/nickwells/strdist.mod/v2/strdist"
 	"github.com/nickwells/units.mod/v2/units"
 )
 
-// UnitCheckFunc is the type of the check function for this setter. It takes
-// a Unit parameter and returns an error (or nil)
-type UnitCheckFunc func(units.Unit) error
+// UnitCheckFunc is an alias for the UnitSetter value checks
+type UnitCheckFunc = check.ValCk[units.Unit]
 
 // UnitSetter allows you to specify a parameter that can be used to set a
 // Unit value. You can also supply check functions that will validate the
 // Value.
-//
-// If you give a ValDesc then that is used as the value description in the
-// help message, otherwise the Unit Family description is used (with spaces
-// replaced by dashes)
 type UnitSetter struct {
 	psetter.ValueReqMandatory
+	psetter.ValueChecker[units.Unit]
 
-	Value   *units.Unit
-	F       *units.Family
-	Checks  []UnitCheckFunc
+	// Value must be set, the program will panic if not. This is the value
+	// being set
+	Value *units.Unit
+	// F must be set, the program will panic if not. This is the units.Family
+	// to which the units being set must belong.
+	F *units.Family
+	// ValDesc can be used to describe the value in a help message describing
+	// the parameter. If it is not set the unit.Family description will be
+	// used (with any spaces replaced by dashes).
 	ValDesc string
-}
-
-// CountChecks returns the number of check functions
-func (s UnitSetter) CountChecks() int {
-	return len(s.Checks)
 }
 
 // suggestAltVal will suggest a possible alternative value for the parameter
@@ -56,17 +54,8 @@ func (s UnitSetter) SetWithVal(_ string, paramVal string) error {
 		return fmt.Errorf("%v%s", err, s.suggestAltVal(paramVal))
 	}
 
-	if len(s.Checks) != 0 {
-		for _, check := range s.Checks {
-			if check == nil {
-				continue
-			}
-
-			err := check(v)
-			if err != nil {
-				return err
-			}
-		}
+	if err := s.ApplyChecks(v); err != nil {
+		return err
 	}
 
 	*s.Value = v
@@ -128,23 +117,19 @@ func (s UnitSetter) CurrentValue() string {
 // Value is nil, if the base unit is invalid or if one of the check functions
 // is nil.
 func (s UnitSetter) CheckSetter(name string) {
-	intro := name + ": unitsetter.UnitSetter Check failed:"
-
 	if s.Value == nil {
-		panic(intro + " the Value to be set is nil")
+		panic(psetter.NilValueMessage(name, fmt.Sprintf("%T", s)))
 	}
 
 	if s.F == nil {
-		panic(intro + " the Family (F) has not been set")
+		panic(psetter.BadSetterMessage(name, fmt.Sprintf("%T", s),
+			"the Family (F) has not been set"))
 	}
 
 	if len(s.F.GetUnitNames()) == 0 {
-		panic(fmt.Sprintf("%s the Family (%q) has no units", intro, s.F.Name()))
+		panic(psetter.BadSetterMessage(name, fmt.Sprintf("%T", s),
+			fmt.Sprintf("the Family (%q) has no units", s.F.Name())))
 	}
 
-	for _, check := range s.Checks {
-		if check == nil {
-			panic(intro + " one of the check functions is nil")
-		}
-	}
+	s.VerifyChecks(name, fmt.Sprintf("%T", s))
 }

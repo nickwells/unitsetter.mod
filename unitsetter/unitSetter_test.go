@@ -51,6 +51,7 @@ func TestUnitSetter(t *testing.T) {
 			},
 			ExpPanic: testhelper.MkExpPanic(
 				dfltParamName + ": unitsetter.UnitSetter Check failed: " +
+					"the Setter is improperly constructed: " +
 					"the Family (F) has not been set"),
 		},
 		{
@@ -61,6 +62,7 @@ func TestUnitSetter(t *testing.T) {
 			},
 			ExpPanic: testhelper.MkExpPanic(
 				dfltParamName + ": unitsetter.UnitSetter Check failed: " +
+					"the Setter is improperly constructed: " +
 					`the Family ("` +
 					units.BadSampleFamily.Name() +
 					`") has no units`),
@@ -74,7 +76,7 @@ func TestUnitSetter(t *testing.T) {
 			},
 			ExpPanic: testhelper.MkExpPanic(
 				dfltParamName + ": unitsetter.UnitSetter Check failed: " +
-					"one of the check functions is nil"),
+					"the Check func at index 0 is nil"),
 		},
 		{
 			ID: testhelper.MkID("good-setter-bad-val"),
